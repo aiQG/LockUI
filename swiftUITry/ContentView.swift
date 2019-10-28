@@ -9,8 +9,15 @@
 import SwiftUI
 
 struct ContentView: View {
+	
+	
     var body: some View {
-        Text("Hello World")
+		VStack {
+			Color.gray.edgesIgnoringSafeArea(.all)
+			Text("aaaaaaaaaaaaaaaaaaaaaaa")
+				.background(Color.red)
+			LockedScene()
+		}
     }
 }
 
