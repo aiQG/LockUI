@@ -9,25 +9,25 @@
 /* Begin PBXBuildFile section */
 		59B2088723667CCF00289877 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59B2088623667CCF00289877 /* AppDelegate.swift */; };
 		59B2088923667CCF00289877 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59B2088823667CCF00289877 /* SceneDelegate.swift */; };
-		59B2088B23667CCF00289877 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59B2088A23667CCF00289877 /* ContentView.swift */; };
 		59B2088D23667CD000289877 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 59B2088C23667CD000289877 /* Assets.xcassets */; };
 		59B2089023667CD000289877 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 59B2088F23667CD000289877 /* Preview Assets.xcassets */; };
 		59B2089323667CD000289877 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 59B2089123667CD000289877 /* LaunchScreen.storyboard */; };
 		59B2089B2366829D00289877 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 59B2089A2366829D00289877 /* README.md */; };
 		59B2089D23668ED000289877 /* LockedScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59B2089C23668ED000289877 /* LockedScene.swift */; };
+		59B208A12367FA1800289877 /* Lock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59B208A02367FA1800289877 /* Lock.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		59B2088323667CCF00289877 /* swiftUITry.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = swiftUITry.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		59B2088623667CCF00289877 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		59B2088823667CCF00289877 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		59B2088A23667CCF00289877 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		59B2088C23667CD000289877 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		59B2088F23667CD000289877 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		59B2089223667CD000289877 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		59B2089423667CD000289877 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		59B2089A2366829D00289877 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		59B2089C23668ED000289877 /* LockedScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockedScene.swift; sourceTree = "<group>"; };
+		59B208A02367FA1800289877 /* Lock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Lock.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,8 +63,8 @@
 			children = (
 				59B2088623667CCF00289877 /* AppDelegate.swift */,
 				59B2088823667CCF00289877 /* SceneDelegate.swift */,
-				59B2088A23667CCF00289877 /* ContentView.swift */,
 				59B2089C23668ED000289877 /* LockedScene.swift */,
+				59B208A02367FA1800289877 /* Lock.swift */,
 				59B2088C23667CD000289877 /* Assets.xcassets */,
 				59B2089123667CD000289877 /* LaunchScreen.storyboard */,
 				59B2089423667CD000289877 /* Info.plist */,
@@ -154,9 +154,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				59B2089D23668ED000289877 /* LockedScene.swift in Sources */,
+				59B208A12367FA1800289877 /* Lock.swift in Sources */,
 				59B2088723667CCF00289877 /* AppDelegate.swift in Sources */,
 				59B2088923667CCF00289877 /* SceneDelegate.swift in Sources */,
-				59B2088B23667CCF00289877 /* ContentView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
