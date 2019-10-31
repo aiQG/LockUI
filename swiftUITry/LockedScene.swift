@@ -29,26 +29,17 @@ struct LockedScene: View {
 				.scaleEffect(isLocked ? 0 : 9)
 				.animation(.easeOut(duration: 1.5))
 			VStack {
+				
 				//icon
-				if isLocked {
-					Image(systemName: "lock")
-						.scaleEffect(2)
-						.animation(.default)
-					//.offset(y: 150)
-				} else {
-					Image(systemName: "lock.open")
-						.scaleEffect(2)
-						.animation(.default)
-				}
-				
-				
+				Lock(isLocked: self.isLocked, baseSize: 100)
 				
 				//interface
-				Button(action: {self.isLocked.toggle()}) {
-					Text("Open")
+				Button("Open") {
+					withAnimation(.easeOut(duration: 3)) {
+						self.isLocked.toggle()
+					}
 				}
 			}
-			
 		}
 	}
 }

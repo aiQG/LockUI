@@ -8,64 +8,98 @@
 
 import SwiftUI
 
-struct Lock: View {
-	@State var baseLength: CGFloat = 100
-	@State var toUp: CGFloat = 0 //0 ~ baseLength*0.1857 ///first
-	@State var toRight: CGFloat = -0.6 //-0.6 ~ 0.6 ///second
-	var body: some View {
-		
-		VStack {
-			RoundedRectangle(cornerRadius: baseLength / 5)
-				.frame(width: baseLength,
-					   height: baseLength - baseLength / 10)
-				.overlay(
-					Path { path in
-						
-						path.move(to: CGPoint(x: baseLength * 0.8,
-											  y: baseLength / 2.5 - toUp))
-						
-						path.addLine(to: CGPoint(x: baseLength * 0.8,
-												 y: -baseLength / 10 - toUp))
-						
-						path.addCurve(
-							to: CGPoint(
-								x: baseLength * (0.8 + toRight),
-								y: -baseLength / 10 - toUp),
-							control1: CGPoint(
-								x: baseLength * 0.8 ,
-								y: -baseLength * 0.382 / 0.618 + 10 - toUp),
-							control2: CGPoint(
-								x: baseLength * (0.8 + toRight),
-								y: -baseLength * 0.382 / 0.618 + 10 - toUp))
-						
-						path.addLine(to: CGPoint(x: baseLength * (0.8 + toRight),
-												 y: baseLength * 0.1 - toUp))
-						
-					}
-					.stroke(Color.black, lineWidth: baseLength / 10)
-					.animation(.easeInOut(duration: 3))
-			)
-				.foregroundColor(.red)
-			
-			
-			Button("BUTTON"){
-				withAnimation(.easeInOut(duration: 4)){
-					self.toUp = self.baseLength*0.1857
-				}
-			} //利用三目运算
-			
-			
-			
-			
-		}
+struct Lock: View, Animatable {
+	
+	var isLocked: Bool = true
+	var baseSize: CGFloat = 100
+	
+	init(isLocked: Bool, baseSize: CGFloat) {
+		self.isLocked = isLocked
+		self.baseSize = baseSize
 	}
 	
+	var body: some View {
+		VStack {
+			RoundedRectangle(cornerRadius: baseSize * 0.2)
+				.frame(width: baseSize,
+					   height: baseSize - baseSize / 10)
+				.overlay(
+					lockAni(baseSize: baseSize, isLocked: isLocked)
+						.stroke(Color.black, lineWidth: baseSize * 0.1)
+			)
+				.foregroundColor(.black)
+			//Text code
+			//			Button("BUTTON"){
+			//				withAnimation(.easeInOut(duration: 4)){
+			//					self.isLocked.toggle()
+			//				}
+			//			}
+		}
+	}
 }
+
+
+
+struct lockAni: Shape {
+	var isLocked:Bool = false
+	
+	var baseSize:CGFloat
+	var toUp:CGFloat
+	var toRight:CGFloat = -0.6 //整合到一个函数(自变量为toUp) 然后直接改path里的参数
+	
+	init(baseSize:CGFloat, isLocked:Bool) {
+		self.isLocked = isLocked
+		self.baseSize = baseSize
+		self.toUp = isLocked ? 0 : baseSize * 0.2
+		self.toRight = isLocked ? -0.6 : 0.6
+	}
+	
+	func path(in rect: CGRect) -> Path {
+		var p = Path()
+		p.move(to: CGPoint(x: baseSize * 0.8,
+						   y: baseSize * 0.4 - toUp ))
+		
+		p.addLine(to: CGPoint(x: baseSize * 0.8,
+							  y: -baseSize * 0.1 - toUp ))
+		
+		p.addCurve(
+			to: CGPoint(
+				x: baseSize * (0.8 + toRight),
+				y: -baseSize * 0.1 - toUp),
+			control1: CGPoint(
+				x: baseSize * 0.8 - toRight,
+				y: baseSize * (0.1 - 0.382 / 0.618) - toUp),
+			control2: CGPoint(
+				x: baseSize * (0.8 + toRight),
+				y: baseSize * (0.1 - 0.382 / 0.618) - toUp))
+		
+		p.addLine(to: CGPoint(x: baseSize * (0.8 + toRight),
+							  y: baseSize * 0.1 - toUp))
+		
+		return p
+	}
+	
+	
+	var animatableData: AnimatablePair<CGFloat, CGFloat> {
+		get { return  AnimatablePair<CGFloat, CGFloat>(toUp, toRight) }
+		set {
+			toUp = newValue.first
+			self.toRight = 1.2 * ( -sin(.pi * 1.5 * (toUp/(baseSize*0.2))) <= 0 ? 0 : -sin(.pi * 1.5 * (toUp/(baseSize*0.2))) ) - 0.6
+		}
+	}
+}
+
 
 
 struct Lock_Previews: PreviewProvider {
 	static var previews: some View {
-		Lock(baseLength: 100.0, toUp: 0, toRight: -0.6)
-		//.previewLayout(.sizeThatFits)
+		Group {
+			Lock(isLocked: true, baseSize: 175)
+				.environment(\.colorScheme, .light)
+			
+			Lock(isLocked: true, baseSize: 175)
+				.environment(\.colorScheme, .dark)
+		}
+		
 	}
 }
