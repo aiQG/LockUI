@@ -9,9 +9,12 @@
 import Foundation
 import SwiftUI
 import AVFoundation
+import Vision
 
 
 class PlayerUIView: UIView {
+	
+	var requests = [VNRequest]()
 	
 	private let playerLayer = AVCaptureVideoPreviewLayer()
 	var layerSession = AVCaptureSession()
@@ -33,6 +36,9 @@ class PlayerUIView: UIView {
 		playerLayer.session = layerSession
 		layer.addSublayer(playerLayer)
 		layerSession.startRunning()
+		
+		let faceRequest = VNDetectFaceRectanglesRequest(completionHandler: self.detectFaceHandler(request:error:))
+		self.requests = [faceRequest]
 	}
 	required init?(coder: NSCoder) {
 		fatalError("init(coder:) has not been implemented")
@@ -41,6 +47,17 @@ class PlayerUIView: UIView {
 		super.layoutSubviews()
 		//Set size
 		playerLayer.frame = bounds
+	}
+	
+	func detectFaceHandler(request: VNRequest, error: Error?) {
+		guard let faceDetectionRequest = request as? VNDetectFaceRectanglesRequest,
+			let results = faceDetectionRequest.results as? [VNFaceObservation] else {
+				return
+		}
+		if results.count > 0{
+			print("face!")
+		}
+		
 	}
 }
 
@@ -65,7 +82,24 @@ extension PlayerUIView: AVCaptureVideoDataOutputSampleBufferDelegate {
 	}//Drop data
 	
 	func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
+		//print("get it")
+		guard let pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) else {
+			return
+		}
 		
+		var requestOptions:[VNImageOption: Any] = [:]
+		
+		if let camData = CMGetAttachment(sampleBuffer,key: kCMSampleBufferAttachmentKey_CameraIntrinsicMatrix, attachmentModeOut: nil){
+			requestOptions = [VNImageOption.cameraIntrinsics: camData]
+		}
+		
+		let imageRequestHandler = VNImageRequestHandler(cvPixelBuffer: pixelBuffer, orientation: CGImagePropertyOrientation(rawValue: 8)!, options: requestOptions)
+		
+		do{
+			try imageRequestHandler.perform(self.requests)
+		} catch {
+			print(error)
+		}
 	}//Get data
 	
 }
