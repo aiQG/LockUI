@@ -10,9 +10,26 @@ import Foundation
 import SwiftUI
 import AVFoundation
 import Vision
+import Combine
+
+struct PlayerView: UIViewRepresentable {
+	var temp: PlayerUIView
+	init(pView: PlayerUIView) {
+		temp = pView
+	}
+	//UIKit初始化?
+	func updateUIView(_ uiView: UIView, context: UIViewRepresentableContext<PlayerView>) {
+	}
+	//包装UIKit为SwiftUI为可用的东西///返回的还是UIView
+	func makeUIView(context: Context) -> UIView {
+		return temp
+	}
+}
 
 
-class PlayerUIView: UIView {
+
+class PlayerUIView: UIView, ObservableObject {
+	@Published var unlock = false
 	
 	var requests = [VNRequest]()
 	
@@ -37,7 +54,7 @@ class PlayerUIView: UIView {
 		layer.addSublayer(playerLayer)
 		layerSession.startRunning()
 		
-		let faceRequest = VNDetectFaceRectanglesRequest(completionHandler: self.detectFaceHandler(request:error:))
+		let faceRequest = VNDetectFaceLandmarksRequest(completionHandler: self.detectFaceHandler(request:error:))
 		self.requests = [faceRequest]
 	}
 	required init?(coder: NSCoder) {
@@ -50,24 +67,16 @@ class PlayerUIView: UIView {
 	}
 	
 	func detectFaceHandler(request: VNRequest, error: Error?) {
-		guard let faceDetectionRequest = request as? VNDetectFaceRectanglesRequest,
+		guard let faceDetectionRequest = request as? VNDetectFaceLandmarksRequest,
 			let results = faceDetectionRequest.results as? [VNFaceObservation] else {
 				return
 		}
 		if results.count > 0{
-			print("face!")
+			DispatchQueue.main.sync{
+				unlock = unlock || Int((results.first?.landmarks?.innerLips?.normalizedPoints[4].y)!) >= 1
+				
+			}
 		}
-		
-	}
-}
-
-struct PlayerView: UIViewRepresentable {
-	//UIKit初始化?
-	func updateUIView(_ uiView: UIView, context: UIViewRepresentableContext<PlayerView>) {
-	}
-	//包装UIKit为SwiftUI为可用的东西///返回的还是UIView
-	func makeUIView(context: Context) -> UIView {
-		return PlayerUIView(frame: .zero)
 	}
 }
 

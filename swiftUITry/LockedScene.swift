@@ -10,7 +10,9 @@ import SwiftUI
 
 
 struct LockedScene: View {
-	@State var isLocked: Bool = true
+	@State var isLocked: Bool = false
+	@EnvironmentObject var envPView: PlayerUIView
+	
 	let colors = Gradient(
 		colors: [.green,
 				 .init(Color.RGBColorSpace.sRGB,
@@ -23,34 +25,34 @@ struct LockedScene: View {
 		ZStack {
 			Color.gray.edgesIgnoringSafeArea(.all)
 			VStack {
-				//Camera
 				ZStack {
-					//to unlock scene
 					Circle()
 						.fill(RadialGradient(gradient: colors, center: .center, startRadius: 80, endRadius: 90))//渐变填充
-						.opacity(isLocked ? 0 : 1)
-						.scaleEffect(isLocked ? 0 : 9)
+						.opacity(!envPView.unlock ? 0 : 1)
+						.scaleEffect(!envPView.unlock ? 0 : 9)
 						.animation(.easeOut(duration: 1.5))
-					PlayerView()
+					
+					PlayerView(pView: envPView)
 						.frame(width: 200)
 						.clipShape(Circle())
 						.overlay(Circle().stroke(Color.gray, lineWidth: 4))
 						.shadow(radius: 10)
 				}
 				
-				//Icon
-				Lock(isLocked: self.isLocked, baseSize: 50)
-					.position(CGPoint(x: UIScreen.main.bounds.width * 0.5,
-									  y: 100))
-				//interface
-				Button("Open") {
-					withAnimation(.easeOut(duration: 1)) {
-						self.isLocked.toggle()
-					}
+				Lock(isLocked: !envPView.unlock, baseSize: 50)
+					.position(CGPoint(x: UIScreen.main.bounds.width * 0.5, y: 100))
+					.animation(.easeOut(duration: 1))
+				
+				Button("Lock") {
+					self.envPView.unlock = false
 				}
+				
+				
 			}
 		}
 	}
+	
+	
 }
 
 struct LockedScene_Previews: PreviewProvider {

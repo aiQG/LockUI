@@ -28,12 +28,6 @@ struct Lock: View, Animatable {
 						.stroke(Color.black, lineWidth: baseSize * 0.1)
 			)
 				.foregroundColor(.black)
-			//Text code
-			//			Button("BUTTON"){
-			//				withAnimation(.easeInOut(duration: 4)){
-			//					self.isLocked.toggle()
-			//				}
-			//			}
 		}
 	}
 }
@@ -86,20 +80,5 @@ struct lockAni: Shape {
 			toUp = newValue.first
 			self.toRight = 1.2 * ( -sin(.pi * 1.5 * (toUp/(baseSize*0.2))) <= 0 ? 0 : -sin(.pi * 1.5 * (toUp/(baseSize*0.2))) ) - 0.6
 		}
-	}
-}
-
-
-
-struct Lock_Previews: PreviewProvider {
-	static var previews: some View {
-		Group {
-			Lock(isLocked: true, baseSize: 175)
-				.environment(\.colorScheme, .light)
-			
-			Lock(isLocked: true, baseSize: 175)
-				.environment(\.colorScheme, .dark)
-		}
-		
 	}
 }
